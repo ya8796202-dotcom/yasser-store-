@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Code Editor",
+    "description": "محرر أكواد متعدد اللغات بواجهة أنيقة.",
+    "image": "images/code-editor.png",
+    "link": "https://example.com/code-editor"
+  },
+  {
+    "name": "Smart Chat",
+    "description": "دردشة ذكية محلية بدون خوادم خارجية.",
+    "image": "images/chat-app.png",
+    "link": "https://example.com/chat-app"
+  },
+  {
+    "name": "Fitness Tracker",
+    "description": "تطبيق لمتابعة التغذية والتمارين الرياضية.",
+    "image": "images/fitness.png",
+    "link": "https://example.com/fitness"
+  }
+]
