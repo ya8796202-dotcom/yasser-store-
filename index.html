@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yasser Store</title>
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; background:#f5f5f5; margin:0; }
+    header { background:#0078d7; color:#fff; padding:20px; text-align:center; font-size:24px; font-weight:bold; }
+    .store { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; padding:20px; }
+    .app-card { background:#fff; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); padding:20px; text-align:center; transition:transform 0.2s; }
+    .app-card:hover { transform:translateY(-5px); }
+    .app-card img { width:100px; height:100px; border-radius:20%; margin-bottom:15px; }
+    .app-card h2 { margin:10px 0; font-size:20px; }
+    .app-card p { font-size:14px; color:#555; margin-bottom:15px; }
+    .install-btn { background:#0078d7; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-size:16px; }
+    .install-btn:hover { background:#005a9e; }
+  </style>
+</head>
+<body>
+  <header>🚀 Yasser Store</header>
+  <div class="store" id="store"></div>
+
+  <script>
+    // قراءة البيانات من ملف JSON خارجي
+    fetch("apps.json")
+      .then(response => response.json())
+      .then(apps => {
+        const store = document.getElementById("store");
+        apps.forEach(app => {
+          const card = document.createElement("div");
+          card.className = "app-card";
+          card.innerHTML = `
+            <img src="${app.image}" alt="${app.name}">
+            <h2>${app.name}</h2>
+            <p>${app.description}</p>
+            <a href="${app.link}" target="_blank">
+              <button class="install-btn">تثبيت التطبيق</button>
+            </a>
+          `;
+          store.appendChild(card);
+        });
+      })
+      .catch(err => console.error("خطأ في تحميل التطبيقات:", err));
+  </script>
+</body>
+</html>
