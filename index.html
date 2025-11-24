@@ -3,124 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yasser Store Glass Yellow</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #fff176, #fdd835, #fbc02d);
-      background-size: 400% 400%;
-      animation: gradientBG 12s ease infinite;
-      display: flex;
-      flex-direction: column;
-    }
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-    header {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      color: #000;
-      padding: 20px;
-      text-align: center;
-      font-size: 30px;
-      font-weight: bold;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    }
-    .search-bar {
-      margin: 20px auto;
-      text-align: center;
-    }
-    .search-bar input {
-      width: 60%;
-      padding: 12px;
-      border-radius: 16px;
-      border: none;
-      font-size: 16px;
-      background: rgba(255,255,255,0.25);
-      backdrop-filter: blur(12px);
-      color: #000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .search-bar input::placeholder {
-      color: #444;
-    }
-    .store {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      padding: 40px;
-      flex: 1;
-    }
-    .app-card {
-      background: rgba(255, 255, 255, 0.25);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      backdrop-filter: blur(18px);
-      padding: 25px;
-      text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
-      color: #000;
-      border: 1px solid rgba(255,255,255,0.4);
-    }
-    .app-card:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-    }
-    .app-card img {
-      width: 100px;
-      height: 100px;
-      border-radius: 20%;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .app-card h2 {
-      margin: 10px 0;
-      font-size: 22px;
-      font-weight: bold;
-    }
-    .app-card p {
-      font-size: 15px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-    .install-btn {
-      background: rgba(255,255,255,0.3);
-      backdrop-filter: blur(10px);
-      color: #000;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.5);
-    }
-    .install-btn:hover {
-      background: rgba(255,255,255,0.5);
-      transform: scale(1.08);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-  </style>
+  <title>Yasser Store</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>🌟 Yasser Store Glass Yellow 🌟</header>
-  
+  <!-- رأس الصفحة -->
+  <header>
+    <h1 class="store-title">✨ Yasser Store ✨</h1>
+    <!-- الشريط العلوي -->
+    <nav class="top-nav">
+      <button class="nav-btn">كل التطبيقات</button>
+      <button class="nav-btn">الأكثر استخدامًا</button>
+      <button class="nav-btn">جديد</button>
+      <button class="nav-btn">المفضلة</button>
+      <div class="dropdown">
+        <button class="nav-btn dropdown-btn">الفئات ⬇</button>
+        <div class="dropdown-content">
+          <a href="#">أدوات</a>
+          <a href="#">شات</a>
+          <a href="#">رياضة</a>
+          <a href="#">تعليم</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
   <!-- شريط البحث -->
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="🔍 ابحث عن تطبيق...">
   </div>
 
+  <!-- منطقة التطبيقات -->
   <div class="store" id="store"></div>
 
   <script>
-    // قراءة التطبيقات من ملف apps.json
     fetch("apps.json")
       .then(response => response.json())
       .then(apps => {
@@ -138,21 +54,19 @@
                 <img src="${app.image}" alt="${app.name}">
                 <h2>${app.name}</h2>
                 <p>${app.description}</p>
-                <a href="${app.link}" target="_blank">
-                  <button class="install-btn">تثبيت التطبيق</button>
-                </a>
+                <div class="btn-group">
+                  <a href="${app.link}" target="_blank"><button class="btn">تثبيت</button></a>
+                  <a href="${app.link}" target="_blank"><button class="btn">معاينة</button></a>
+                  <button class="btn">مشاركة</button>
+                  <button class="btn">تفاصيل</button>
+                </div>
               `;
               store.appendChild(card);
             });
         }
 
-        // أول تحميل
         renderApps();
-
-        // البحث المباشر
-        searchInput.addEventListener("input", e => {
-          renderApps(e.target.value);
-        });
+        searchInput.addEventListener("input", e => renderApps(e.target.value));
       })
       .catch(err => console.error("خطأ في تحميل التطبيقات:", err));
   </script>
