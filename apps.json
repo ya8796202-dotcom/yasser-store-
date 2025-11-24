@@ -7,14 +7,14 @@
   },
   {
     "name": "Smart Chat",
-    "description": "دردشة ذكية محلية بدون خوادم خارجية.",
-    "image": "images/chat-app.png",
-    "link": "https://example.com/chat-app"
+    "description": "تطبيق الغاز ذكيه للاذكياء فقط",
+    "image": "images/الغاز.png",
+    "link": "https://ya8796202-dotcom.github.io/ALGAZ/"
   },
   {
     "name": "Fitness Tracker",
     "description": "تطبيق لمتابعة التغذية والتمارين الرياضية.",
-    "image": "images/fitness.png",
-    "link": "https://example.com/fitness"
+    "image": "images/فتنس.png",
+    "link": "https://ya8796202-dotcom.github.io/Gym/"
   }
 ]
