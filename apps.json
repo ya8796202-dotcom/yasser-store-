@@ -3,18 +3,18 @@
     "name": "Code Editor",
     "description": "محرر أكواد متعدد اللغات بواجهة أنيقة.",
     "image": "images/code-editor.png",
-    "link": "https://ya8796202-dotcom.github.io/Templates/"
+    "link": "https://example.com/code-editor"
   },
   {
-    "name": "ALGAZ",
-    "description": "تطبيق الغاز ذكيه للاذكياء فقط",
-    "image": "images/الغاز.png",
-    "link": "https://ya8796202-dotcom.github.io/ALGAZ/"
+    "name": "Smart Chat",
+    "description": "دردشة ذكية محلية بدون خوادم خارجية.",
+    "image": "images/chat-app.png",
+    "link": "https://example.com/chat-app"
   },
   {
     "name": "Fitness Tracker",
     "description": "تطبيق لمتابعة التغذية والتمارين الرياضية.",
-    "image": "images/فتنس.png",
-    "link": "https://ya8796202-dotcom.github.io/Gym/"
-  },
-
+    "image": "images/fitness.png",
+    "link": "https://example.com/fitness"
+  }
+]
