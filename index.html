@@ -1,74 +1,300 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yasser Store</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Yasser Store — معرض تطبيقات الويب</title>
+  <meta name="description" content="Yasser Store: معرض تطبيقات ويب من تطوير ياسر مع إمكانية التثبيت لكل تطبيق يدعم PWA.">
+
+  <!-- أيقونة بسيطة للستور (الموقع غير قابل للتثبيت) -->
+  <link rel="icon" href="data:image/svg+xml,
+  %3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E
+    %3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop stop-color='%231e293b'/%3E%3Cstop offset='1' stop-color='%230a101f'/%3E%3C/linearGradient%3E%3C/defs%3E
+    %3Crect x='2' y='2' width='60' height='60' rx='14' fill='url(%23g)'/%3E
+    %3Ctext x='32' y='38' text-anchor='middle' font-size='22' font-family='sans-serif' fill='%23a7f3d0'%3EYS%3C/text%3E
+  %3C/svg%3E">
+
+  <style>
+    :root{
+      --bg:#0b132a; --glass:rgba(255,255,255,0.08); --border:rgba(255,255,255,0.12);
+      --text:#e5e7eb; --muted:#9ca3af;
+      --accent:#22c55e; /* أخضر عصري افتراضي */
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--text);
+      font-family:"Tajawal", system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Arabic", Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 15% 10%, #0f1c44 0%, var(--bg) 55%, #060b1c 100%);
+    }
+    header{
+      position:sticky; top:0; z-index:100;
+      backdrop-filter:blur(12px);
+      background:linear-gradient(180deg, rgba(34,197,94,0.15), rgba(34,197,94,0.06));
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      max-width:1100px; margin:0 auto; padding:14px 18px;
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{
+      width:36px; height:36px; border-radius:10px; display:grid; place-items:center;
+      background:linear-gradient(135deg, #16a34a, #32cd72);
+      box-shadow: 0 0 12px rgba(34,197,94,0.5), inset 0 0 10px rgba(255,255,255,0.15);
+      color:#081013; font-weight:900; font-size:12px;
+    }
+    .nav a{color:var(--text); text-decoration:none; padding:8px 12px; border-radius:10px}
+    .nav a:hover{background:rgba(34,197,94,0.15)}
+    .nav .actions{margin-inline-start:auto; display:flex; gap:10px; align-items:center}
+    .btn{
+      background:var(--accent); color:#081013; border:none; border-radius:10px; padding:8px 14px; font-weight:700;
+      box-shadow:0 6px 18px rgba(34,197,94,0.35); cursor:pointer; transition:transform 120ms, filter 200ms;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    .btn.outline{background:transparent; color:var(--accent); border:1px solid rgba(34,197,94,0.6); box-shadow:none}
+
+    main{max-width:1100px; margin:24px auto; padding:0 18px}
+    section{margin:26px 0}
+    h1,h2,h3{margin:0 0 10px}
+    h1{font-size:26px} h2{font-size:22px}
+    p{color:var(--muted); line-height:1.9}
+
+    .toolbar{
+      display:grid; grid-template-columns: 1fr auto auto; gap:10px; margin:14px 0;
+      align-items:center;
+    }
+    .input, .select{
+      width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+      background: rgba(255,255,255,0.06); color:var(--text);
+    }
+
+    .grid{display:grid; gap:16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));}
+    .card{
+      background:var(--glass); border:1px solid var(--border); border-radius:16px; padding:16px;
+      backdrop-filter:blur(8px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.25); transition:transform 160ms, box-shadow 160ms, border-color 160ms;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .card:hover{transform:translateY(-3px); box-shadow:0 18px 40px rgba(0,0,0,0.35); border-color:rgba(34,197,94,0.35)}
+    .meta{font-size:13px; color:var(--muted)}
+    .thumb{
+      width:100%; height:140px; border-radius:12px; border:1px dashed rgba(255,255,255,0.12);
+      display:grid; place-items:center; color:var(--muted); font-size:14px;
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,0.04) 0 10px, rgba(255,255,255,0.06) 10px 20px);
+    }
+    .tags{display:flex; flex-wrap:wrap; gap:6px}
+    .tag{display:inline-block; padding:4px 8px; border-radius:999px; background:rgba(34,197,94,0.18); border:1px solid var(--border); font-size:12px; color:#d1fae5}
+
+    .status{display:flex; align-items:center; gap:8px; font-size:13px}
+    .dot{width:10px; height:10px; border-radius:999px}
+    .ok{background:#22c55e} .warn{background:#f59e0b} .bad{background:#ef4444}
+
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .row .btn{flex:1}
+    .row .btn.outline{flex:0 1 auto}
+
+    footer{margin-top:32px; padding:18px; border-top:1px solid var(--border); color:var(--muted); text-align:center}
+
+    /* ثيمات إضافية للتبديل */
+    .theme-blue{--accent:#3b82f6}
+    .theme-orange{--accent:#f97316}
+    .theme-purple{--accent:#a855f7}
+    .theme-gray{--accent:#9ca3af}
+  </style>
 </head>
 <body>
-  <!-- رأس الصفحة -->
   <header>
-    <h1 class="store-title">✨ Yasser Store ✨</h1>
-    <!-- الشريط العلوي -->
-    <nav class="top-nav">
-      <button class="nav-btn">كل التطبيقات</button>
-      <button class="nav-btn">الأكثر استخدامًا</button>
-      <button class="nav-btn">جديد</button>
-      <button class="nav-btn">المفضلة</button>
-      <div class="dropdown">
-        <button class="nav-btn dropdown-btn">الفئات ⬇</button>
-        <div class="dropdown-content">
-          <a href="#">أدوات</a>
-          <a href="#">شات</a>
-          <a href="#">رياضة</a>
-          <a href="#">تعليم</a>
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo">YS</div>
+        <div>
+          <div>Yasser Store</div>
+          <small class="meta">معرض تطبيقات ويب من تطوير ياسر — تثبيت لكل تطبيق يدعم PWA</small>
         </div>
+      </div>
+      <a href="#store">المعرض</a>
+      <a href="#about">عن المتجر</a>
+      <div class="actions">
+        <button class="btn outline" id="themeBtn">تبديل اللون</button>
       </div>
     </nav>
   </header>
 
-  <!-- شريط البحث -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 ابحث عن تطبيق...">
-  </div>
+  <main>
+    <section id="store">
+      <h1>معرض التطبيقات</h1>
+      <p>اختر أي تطبيق لفتحه أو تثبيته. إن كان التطبيق يدعم PWA، سترى حالة “قابل للتثبيت”.</p>
 
-  <!-- منطقة التطبيقات -->
-  <div class="store" id="store"></div>
+      <div class="toolbar">
+        <input class="input" id="search" placeholder="ابحث باسم التطبيق أو الوصف أو الوسوم">
+        <select class="select" id="filter">
+          <option value="">كل الفئات</option>
+          <option value="tools">أدوات</option>
+          <option value="education">تعليمي</option>
+          <option value="media">وسائط</option>
+          <option value="iot">إنترنت الأشياء</option>
+        </select>
+        <button class="btn outline" id="addSample">إضافة مثال</button>
+      </div>
+
+      <div class="grid" id="appsGrid"></div>
+    </section>
+
+    <section id="about">
+      <h2>عن Yasser Store</h2>
+      <p>منصة خفيفة لعرض تطبيقات الويب التي طوّرها ياسر. كل بطاقة تحتوي على زر فتح التطبيق وزر تثبيت. التثبيت يعتمد على دعم التطبيق نفسه لـ PWA (manifest + service worker). هذا الموقع غير قابل للتثبيت لتبسيط التجربة.</p>
+    </section>
+
+    <footer>© 2025 — Yasser Store. واجهة زجاجية — ألوان عصرية — جاهز للنشر.</footer>
+  </main>
 
   <script>
-    fetch("apps.json")
-      .then(response => response.json())
-      .then(apps => {
-        const store = document.getElementById("store");
-        const searchInput = document.getElementById("searchInput");
+    // بيانات التطبيقات (عدّلها كما تريد)
+    const apps = [
+      {
+        name: "L293D Guide",
+        url: "https://your-domain.example/l293d", // استبدل بالرابط الفعلي
+        icon: "🔧",
+        desc: "دليل احترافي للتحكم في شيلد L293D مع الأردوينو، يدعم PWA.",
+        tags: ["education","iot","arduino"]
+      },
+      {
+        name: "Glass Image Studio",
+        url: "https://your-domain.example/glass-studio",
+        icon: "🖼️",
+        desc: "استوديو صور بواجهة زجاجية أنيقة.",
+        tags: ["media","tools"]
+      },
+      {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+      },
+    
+            {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+      },
+                  {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+      },
 
-        function renderApps(filter="") {
-          store.innerHTML = "";
-          apps
-            .filter(app => app.name.toLowerCase().includes(filter.toLowerCase()))
-            .forEach(app => {
-              const card = document.createElement("div");
-              card.className = "app-card";
-              card.innerHTML = `
-                <img src="${app.image}" alt="${app.name}">
-                <h2>${app.name}</h2>
-                <p>${app.description}</p>
-                <div class="btn-group">
-                  <a href="${app.link}" target="_blank"><button class="btn">تثبيت</button></a>
-                  <a href="${app.link}" target="_blank"><button class="btn">معاينة</button></a>
-                  <button class="btn">مشاركة</button>
-                  <button class="btn">تفاصيل</button>
-                </div>
-              `;
-              store.appendChild(card);
-            });
+                        {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+      },
+                              {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+                              },
+                                      {
+        name: "Quick Notes PWA",
+        url: "https://your-domain.example/notes",
+        icon: "📝",
+        desc: "مفكرة سريعة قابلة للتثبيت والعمل دون اتصال.",
+        tags: ["tools"]
+                                      }
+    ];
+
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+
+    function tagHTML(t){ return `<span class="tag">${t}</span>`; }
+
+    async function checkInstallable(appUrl){
+      try{
+        // محاولة جلب manifest من الرابط الشائع /manifest.json أو عبر <link rel="manifest"> داخل الصفحة (مختصر هنا)
+        const possible = [new URL("manifest.json", appUrl).href, appUrl];
+        // نحاول أولاً manifest.json مباشرة
+        const resp = await fetch(possible[0], {method:"GET", mode:"cors"});
+        if (resp.ok){
+          const type = resp.headers.get("content-type") || "";
+          if (type.includes("application/json")) return {ok:true, hint:"Manifest موجود — غالبًا قابل للتثبيت"};
         }
+        // محاولة بديلة: نفترض أن التطبيق سيظهر زر تثبيت داخليًا
+        return {ok:false, hint:"لم يُكتشف manifest تلقائيًا — جرّب تثبيتًا من داخل التطبيق"};
+      }catch(e){
+        return {ok:false, hint:"تعذر فحص التثبيت — ربما يمنع CORS"};
+      }
+    }
 
-        renderApps();
-        searchInput.addEventListener("input", e => renderApps(e.target.value));
-      })
-      .catch(err => console.error("خطأ في تحميل التطبيقات:", err));
+    async function render(){
+      const q = ($("#search").value || "").toLowerCase();
+      const f = $("#filter").value || "";
+      const items = apps.filter(a=>{
+        const inText = (a.name+a.desc+a.tags.join(" ")).toLowerCase().includes(q);
+        const inCat = f ? a.tags.includes(f) : true;
+        return inText && inCat;
+      });
+
+      const grid = $("#appsGrid");
+      grid.innerHTML = "";
+      for (const a of items){
+        const status = await checkInstallable(a.url);
+        const dotClass = status.ok ? "ok" : "warn";
+        const statText = status.ok ? "قابل للتثبيت" : "فحص غير حاسم";
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="thumb">${a.icon} معاينة</div>
+          <h3>${a.name}</h3>
+          <div class="meta">${a.desc}</div>
+          <div class="tags">${a.tags.map(tagHTML).join("")}</div>
+          <div class="status"><span class="dot ${dotClass}"></span> <span>${statText}</span> <span class="meta">— ${status.hint}</span></div>
+          <div class="row">
+            <button class="btn" data-open>فتح التطبيق</button>
+            <button class="btn outline" data-install>تثبيت التطبيق</button>
+          </div>
+        `;
+        // فتح التطبيق
+        card.querySelector("[data-open]").addEventListener("click", ()=> {
+          window.open(a.url, "_blank", "noopener,noreferrer");
+        });
+        // محاولة تثبيت: نفتح التطبيق ونوضح الإرشاد
+        card.querySelector("[data-install]").addEventListener("click", ()=> {
+          const w = window.open(a.url, "_blank", "noopener,noreferrer");
+          alert("لفتح التثبيت: استخدم قائمة المتصفح (Install app) داخل التطبيق المفتوح. إن كان التطبيق يدعم PWA سيظهر زر التثبيت هناك.");
+        });
+        grid.appendChild(card);
+      }
+    }
+
+    $("#search").addEventListener("input", render);
+    $("#filter").addEventListener("change", render);
+
+    $("#addSample").addEventListener("click", ()=>{
+      const name = prompt("اسم التطبيق:");
+      const url = prompt("رابط التطبيق (https://...):");
+      if (!name || !url) return;
+      apps.push({name, url, icon:"✨", desc:"تطبيق جديد", tags:["tools"]});
+      render();
+    });
+
+    // تبديل اللون (ثيمات عصرية)
+    const themes = ["", "theme-blue", "theme-orange", "theme-purple", "theme-gray"];
+    let tIndex = 0;
+    $("#themeBtn").addEventListener("click", ()=>{
+      document.body.classList.remove(...themes);
+      tIndex = (tIndex + 1) % themes.length;
+      if (themes[tIndex]) document.body.classList.add(themes[tIndex]);
+    });
+
+    render();
   </script>
 </body>
 </html>
